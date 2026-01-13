@@ -1,0 +1,22 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "nodeVersion": "22.14.0",
+    "sdksVersions": {
+      "@microsoft/microsoft-graph-client": "3.0.2",
+      "@microsoft/teams-js": "2.24.0"
+    },
+    "version": "1.22.1",
+    "libraryName": "sp-poll-webpart",
+    "libraryId": "959a2d86-fc12-43bb-91a6-4e4854526e73",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "sp-poll-webpart",
+    "solutionShortDescription": "ReactPoll description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "webpart",
+    "useGulp": false
+  }
+}

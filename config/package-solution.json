@@ -1,0 +1,49 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/package-solution.schema.json",
+  "solution": {
+    "name": "sp-poll-webpart-client-side-solution",
+    "id": "959a2d86-fc12-43bb-91a6-4e4854526e73",
+    "version": "1.0.0.0",
+    "includeClientSideAssets": true,
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "developer": {
+      "name": "",
+      "websiteUrl": "",
+      "privacyUrl": "",
+      "termsOfUseUrl": "",
+      "mpnId": ""
+    },
+    "metadata": {
+      "shortDescription": {
+        "default": "Interactive Poll Web Part for SharePoint Online"
+      },
+      "longDescription": {
+        "default": "A SharePoint Framework web part that allows users to participate in polls and view results in real-time with interactive pie charts."
+      },
+      "screenshotPaths": [],
+      "videoUrl": "",
+      "categories": []
+    },
+    "features": [
+      {
+        "title": "SP Poll Web Part Feature",
+        "description": "Provisions the Poll Questions and Poll Answers lists required for the poll functionality.",
+        "id": "f8f96128-e5f1-4f79-8bc1-2480bc29742d",
+        "version": "1.0.0.0",
+        "assets": {
+          "elementManifests": [
+            "elements.xml"
+          ],
+          "elementFiles": [
+            "schema.xml",
+            "PollQuestionsSchema.xml"
+          ]
+        }
+      }
+    ]
+  },
+  "paths": {
+    "zippedPackage": "solution/sp-poll-webpart.sppkg"
+  }
+}

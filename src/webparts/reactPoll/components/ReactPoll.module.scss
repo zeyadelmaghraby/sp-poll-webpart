@@ -1,0 +1,65 @@
+@import '~@microsoft/sp-office-ui-fabric-core/dist/sass/SPFabricCore.scss';
+
+// Fabric Core Grid Classes - exposed for TypeScript
+.ms-Grid {
+  @include ms-Grid;
+}
+.ms-Grid-row {
+  @include ms-Grid-row;
+}
+.ms-Grid-col {
+  @include ms-Grid-col;
+}
+.ms-sm12 {
+  @include ms-sm12;
+}
+.ms-md12 {
+  @include ms-md12;
+}
+.ms-lg6 {
+  @include ms-lg6;
+}
+.ms-font-m-plus {
+  @include ms-font-m-plus;
+}
+.ms-fontWeight-bold {
+  @include ms-fontWeight-bold;
+}
+
+.reactPoll {
+  overflow: hidden;
+  padding: 1em;
+  color: "[theme:bodyText, default: #323130]";
+  color: var(--bodyText);
+  &.teams {
+    font-family: $ms-font-family-fallbacks;
+  }
+}
+.submitButtonRow{
+  text-align: center;
+  margin-top: 3rem ;
+}
+.chartRow{
+  text-align: center;
+  margin-top: 2rem ;
+}
+.welcome {
+  text-align: center; 
+}
+.welcomeImage {
+  width: 100%;
+  max-width: 420px;
+}
+.links {
+  a {
+    text-decoration: none;
+    color: "[theme:link, default:#03787c]";
+    color: var(--link); // note: CSS Custom Properties support is limited to modern browsers only
+
+    &:hover {
+      text-decoration: underline;
+      color: "[theme:linkHovered, default: #014446]";
+      color: var(--linkHovered); // note: CSS Custom Properties support is limited to modern browsers only
+    }
+  }
+}

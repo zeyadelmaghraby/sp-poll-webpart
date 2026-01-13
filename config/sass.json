@@ -1,0 +1,9 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/heft/sass.schema.json",
+  "srcFolder": "src",
+  "generatedTsFolder": "temp/sass-ts",
+  "cssOutputFolders": ["lib"],
+  "importIncludePaths": [
+    "node_modules"
+  ]
+}
