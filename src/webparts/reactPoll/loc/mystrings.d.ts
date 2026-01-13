@@ -11,6 +11,8 @@ declare interface IReactPollWebPartStrings {
   // Arabic Text Group
   ArabicTextGroupName: string;
   ArabicTextDescription: string;
+  // Generic Text Config Group
+  TextConfigGroupName: string;
   // Text Field Labels
   WebPartTitleLabel: string;
   SubmitButtonLabel: string;

@@ -172,57 +172,33 @@ export default class ReactPollWebPart extends BaseClientSideWebPart<IReactPollWe
   }
 
   protected getPropertyPaneConfiguration(): IPropertyPaneConfiguration {
-    // Build English text configuration group
-    const englishTextGroup: IPropertyPaneGroup = {
-      groupName: strings.EnglishTextGroupName,
-      groupFields: [
-        PropertyPaneTextField('webPartTitleEn', {
-          label: strings.WebPartTitleLabel
-        }),
-        PropertyPaneTextField('submitButtonTextEn', {
-          label: strings.SubmitButtonLabel
-        }),
-        PropertyPaneTextField('loadingMessageEn', {
-          label: strings.LoadingMessageLabel
-        }),
-        PropertyPaneTextField('noQuestionsMessageEn', {
-          label: strings.NoQuestionsMessageLabel
-        }),
-        PropertyPaneTextField('selectOptionMessageEn', {
-          label: strings.SelectOptionMessageLabel
-        }),
-        PropertyPaneTextField('thankYouMessageEn', {
-          label: strings.ThankYouMessageLabel
-        }),
-        PropertyPaneTextField('resultsTitleEn', {
-          label: strings.ResultsTitleLabel
-        })
-      ]
-    };
+    // Determine which text fields to show based on selected language
+    const isArabic = this.properties.language === Language.Arabic;
+    const langSuffix = isArabic ? 'Ar' : 'En';
 
-    // Build Arabic text configuration group
-    const arabicTextGroup: IPropertyPaneGroup = {
-      groupName: strings.ArabicTextGroupName,
+    // Build text configuration group - dynamically shows English or Arabic fields
+    const textConfigGroup: IPropertyPaneGroup = {
+      groupName: strings.TextConfigGroupName,
       groupFields: [
-        PropertyPaneTextField('webPartTitleAr', {
+        PropertyPaneTextField(`webPartTitle${langSuffix}`, {
           label: strings.WebPartTitleLabel
         }),
-        PropertyPaneTextField('submitButtonTextAr', {
+        PropertyPaneTextField(`submitButtonText${langSuffix}`, {
           label: strings.SubmitButtonLabel
         }),
-        PropertyPaneTextField('loadingMessageAr', {
+        PropertyPaneTextField(`loadingMessage${langSuffix}`, {
           label: strings.LoadingMessageLabel
         }),
-        PropertyPaneTextField('noQuestionsMessageAr', {
+        PropertyPaneTextField(`noQuestionsMessage${langSuffix}`, {
           label: strings.NoQuestionsMessageLabel
         }),
-        PropertyPaneTextField('selectOptionMessageAr', {
+        PropertyPaneTextField(`selectOptionMessage${langSuffix}`, {
           label: strings.SelectOptionMessageLabel
         }),
-        PropertyPaneTextField('thankYouMessageAr', {
+        PropertyPaneTextField(`thankYouMessage${langSuffix}`, {
           label: strings.ThankYouMessageLabel
         }),
-        PropertyPaneTextField('resultsTitleAr', {
+        PropertyPaneTextField(`resultsTitle${langSuffix}`, {
           label: strings.ResultsTitleLabel
         })
       ]
@@ -252,15 +228,9 @@ export default class ReactPollWebPart extends BaseClientSideWebPart<IReactPollWe
         },
         {
           header: {
-            description: strings.EnglishTextDescription
+            description: isArabic ? strings.ArabicTextDescription : strings.EnglishTextDescription
           },
-          groups: [englishTextGroup]
-        },
-        {
-          header: {
-            description: strings.ArabicTextDescription
-          },
-          groups: [arabicTextGroup]
+          groups: [textConfigGroup]
         }
       ]
     };

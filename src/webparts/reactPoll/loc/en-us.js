@@ -12,6 +12,8 @@ define([], function() {
     // Arabic Text Group
     "ArabicTextGroupName": "Arabic Text Configuration",
     "ArabicTextDescription": "Configure the Arabic text displayed in the Poll Web Part.",
+    // Generic Text Config Group
+    "TextConfigGroupName": "Text Configuration",
     // Text Field Labels
     "WebPartTitleLabel": "Web Part Title",
     "SubmitButtonLabel": "Submit Button Text",
