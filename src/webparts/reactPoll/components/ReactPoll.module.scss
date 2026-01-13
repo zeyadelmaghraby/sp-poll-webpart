@@ -52,14 +52,15 @@
   // Arabic font family for better rendering
   font-family: 'Segoe UI', 'Arabic Typesetting', 'Traditional Arabic', Tahoma, Arial, sans-serif;
 
-  // Override Fluent UI components for RTL
-  .ms-ChoiceField {
-    text-align: right;
-  }
-
-  // Ensure labels are aligned correctly in RTL
+  // Override Fluent UI ChoiceGroup for RTL - Radio button on right, label on left
   :global(.ms-ChoiceFieldGroup-flexContainer) {
     direction: rtl;
+  }
+
+  // ChoiceField wrapper - reverse the layout
+  :global(.ms-ChoiceField) {
+    direction: rtl;
+    text-align: right;
   }
 
   :global(.ms-ChoiceField-wrapper) {
@@ -67,14 +68,34 @@
     margin-left: 10px;
   }
 
+  // Position radio button on the right side
   :global(.ms-ChoiceField-field) {
     padding-right: 26px;
     padding-left: 0;
+    
+    // Radio circle - outer ring (move to right)
+    &::before {
+      right: 0;
+      left: auto !important;
+    }
+    
+    // Radio circle - inner dot when selected (move to right)
+    &::after {
+      right: 5px;
+      left: auto !important;
+    }
+  }
+
+  // Label wrapper positioning for RTL
+  :global(.ms-ChoiceField-labelWrapper) {
+    margin-left: 0;
+    margin-right: 10px;
   }
 
   :global(.ms-ChoiceField-innerField) {
     padding-right: 0;
     padding-left: 10px;
+    flex-direction: row-reverse;
   }
 
   // Button alignment for RTL

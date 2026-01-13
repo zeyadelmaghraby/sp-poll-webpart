@@ -201,7 +201,7 @@ const ReactPoll: React.FunctionComponent<IReactPollProps> = (props) => {
                         onChange={(e, selectedOption) =>
                           changeSelectedOption(e, selectedOption, question.id)
                         }
-                        // Apply RTL styling to ChoiceGroup
+                        // Apply RTL styling to ChoiceGroup - radio button on right for Arabic
                         styles={{
                           label: {
                             textAlign: isRTL ? 'right' : 'left',
@@ -211,7 +211,34 @@ const ReactPoll: React.FunctionComponent<IReactPollProps> = (props) => {
                           },
                           flexContainer: {
                             direction: isRTL ? 'rtl' : 'ltr',
-                          }
+                          },
+                          // RTL: Position radio button on the right side
+                          root: isRTL ? {
+                            // Apply RTL direction to each choice field
+                            '.ms-ChoiceField': {
+                              direction: 'rtl',
+                            },
+                            '.ms-ChoiceField-field': {
+                              paddingRight: '26px',
+                              paddingLeft: '0',
+                            },
+                            '.ms-ChoiceField-innerField': {
+                              flexDirection: 'row-reverse',
+                            },
+                            '.ms-ChoiceField-labelWrapper': {
+                              marginLeft: '0',
+                              marginRight: '10px',
+                            },
+                            // Position the radio circle on the right
+                            '.ms-ChoiceField-field::before': {
+                              right: '0',
+                              left: 'auto',
+                            },
+                            '.ms-ChoiceField-field::after': {
+                              right: '5px',
+                              left: 'auto',
+                            }
+                          } : undefined
                         }}
                       />
                     </div>
