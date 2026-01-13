@@ -2,6 +2,24 @@ declare interface IReactPollWebPartStrings {
   PropertyPaneDescription: string;
   BasicGroupName: string;
   DescriptionFieldLabel: string;
+  // Language Settings
+  LanguageGroupName: string;
+  LanguageFieldLabel: string;
+  // English Text Group
+  EnglishTextGroupName: string;
+  EnglishTextDescription: string;
+  // Arabic Text Group
+  ArabicTextGroupName: string;
+  ArabicTextDescription: string;
+  // Text Field Labels
+  WebPartTitleLabel: string;
+  SubmitButtonLabel: string;
+  LoadingMessageLabel: string;
+  NoQuestionsMessageLabel: string;
+  SelectOptionMessageLabel: string;
+  ThankYouMessageLabel: string;
+  ResultsTitleLabel: string;
+  // Environment Messages
   AppLocalEnvironmentSharePoint: string;
   AppLocalEnvironmentTeams: string;
   AppLocalEnvironmentOffice: string;

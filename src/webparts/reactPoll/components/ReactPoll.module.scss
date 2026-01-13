@@ -1,6 +1,8 @@
 @import '~@microsoft/sp-office-ui-fabric-core/dist/sass/SPFabricCore.scss';
 
+// ============================================================================
 // Fabric Core Grid Classes - exposed for TypeScript
+// ============================================================================
 .ms-Grid {
   @include ms-Grid;
 }
@@ -26,40 +28,280 @@
   @include ms-fontWeight-bold;
 }
 
+// ============================================================================
+// RTL/LTR Direction Support
+// These classes handle the layout direction switching for bilingual support
+// ============================================================================
+
+// LTR (Left-to-Right) - Default for English
+.ltr {
+  direction: ltr;
+  text-align: left;
+
+  // Ensure proper alignment for LTR content
+  .ms-ChoiceField {
+    text-align: left;
+  }
+}
+
+// RTL (Right-to-Left) - For Arabic
+.rtl {
+  direction: rtl;
+  text-align: right;
+  
+  // Arabic font family for better rendering
+  font-family: 'Segoe UI', 'Arabic Typesetting', 'Traditional Arabic', Tahoma, Arial, sans-serif;
+
+  // Override Fluent UI components for RTL
+  .ms-ChoiceField {
+    text-align: right;
+  }
+
+  // Ensure labels are aligned correctly in RTL
+  :global(.ms-ChoiceFieldGroup-flexContainer) {
+    direction: rtl;
+  }
+
+  :global(.ms-ChoiceField-wrapper) {
+    margin-right: 0;
+    margin-left: 10px;
+  }
+
+  :global(.ms-ChoiceField-field) {
+    padding-right: 26px;
+    padding-left: 0;
+  }
+
+  :global(.ms-ChoiceField-innerField) {
+    padding-right: 0;
+    padding-left: 10px;
+  }
+
+  // Button alignment for RTL
+  .submitButtonRow {
+    text-align: center;
+  }
+}
+
+// ============================================================================
+// Main Poll Container
+// ============================================================================
 .reactPoll {
   overflow: hidden;
   padding: 1em;
   color: "[theme:bodyText, default: #323130]";
   color: var(--bodyText);
+  
   &.teams {
     font-family: $ms-font-family-fallbacks;
   }
 }
-.submitButtonRow{
-  text-align: center;
-  margin-top: 3rem ;
+
+// ============================================================================
+// Web Part Title Section
+// ============================================================================
+.pollTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid "[theme:neutralLight, default: #edebe9]";
+  border-bottom-color: var(--neutralLight);
 }
-.chartRow{
-  text-align: center;
-  margin-top: 2rem ;
+
+// RTL specific title styling
+.rtl .pollTitle {
+  font-family: 'Segoe UI', 'Arabic Typesetting', 'Traditional Arabic', Tahoma, Arial, sans-serif;
 }
+
+// ============================================================================
+// Question Section
+// ============================================================================
+.questionLabel {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+}
+
+// RTL question styling with Arabic font
+.rtl .questionLabel {
+  font-family: 'Segoe UI', 'Arabic Typesetting', 'Traditional Arabic', Tahoma, Arial, sans-serif;
+}
+
+// ============================================================================
+// Button Styling
+// ============================================================================
+.submitButtonRow {
+  text-align: center;
+  margin-top: 3rem;
+}
+
+.chartRow {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+// ============================================================================
+// Messages and Notifications
+// ============================================================================
+.messageContainer {
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 4px;
+  background-color: "[theme:neutralLighter, default: #f3f2f1]";
+  background-color: var(--neutralLighter);
+}
+
+.noQuestionsMessage,
+.loadingMessage {
+  text-align: center;
+  padding: 2rem;
+  color: "[theme:neutralSecondary, default: #605e5c]";
+  color: var(--neutralSecondary);
+  font-style: italic;
+}
+
+.rtl .noQuestionsMessage,
+.rtl .loadingMessage {
+  font-family: 'Segoe UI', 'Arabic Typesetting', 'Traditional Arabic', Tahoma, Arial, sans-serif;
+}
+
+// ============================================================================
+// Results Section
+// ============================================================================
+.resultsTitle {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.rtl .resultsTitle {
+  font-family: 'Segoe UI', 'Arabic Typesetting', 'Traditional Arabic', Tahoma, Arial, sans-serif;
+}
+
+// ============================================================================
+// Welcome and Image Sections
+// ============================================================================
 .welcome {
-  text-align: center; 
+  text-align: center;
 }
+
 .welcomeImage {
   width: 100%;
   max-width: 420px;
 }
+
+// ============================================================================
+// Links
+// ============================================================================
 .links {
   a {
     text-decoration: none;
     color: "[theme:link, default:#03787c]";
-    color: var(--link); // note: CSS Custom Properties support is limited to modern browsers only
+    color: var(--link);
 
     &:hover {
       text-decoration: underline;
       color: "[theme:linkHovered, default: #014446]";
-      color: var(--linkHovered); // note: CSS Custom Properties support is limited to modern browsers only
+      color: var(--linkHovered);
+    }
+  }
+}
+
+// ============================================================================
+// Responsive Design - Mobile First Approach
+// Ensures consistent spacing and alignment across all devices
+// ============================================================================
+
+// Extra small devices (phones, less than 480px)
+@media screen and (max-width: 479px) {
+  .reactPoll {
+    padding: 0.75rem;
+  }
+
+  .pollTitle {
+    font-size: 1.25rem;
+  }
+
+  .questionLabel {
+    font-size: 1rem;
+  }
+
+  .submitButtonRow {
+    margin-top: 2rem;
+  }
+
+  .chartRow {
+    margin-top: 1.5rem;
+  }
+
+  // Full width chart on mobile
+  .chartContainer {
+    width: 100%;
+    padding: 0;
+  }
+}
+
+// Small devices (tablets portrait, 480px - 767px)
+@media screen and (min-width: 480px) and (max-width: 767px) {
+  .reactPoll {
+    padding: 1rem;
+  }
+
+  .pollTitle {
+    font-size: 1.35rem;
+  }
+
+  .chartContainer {
+    width: 90%;
+    margin: 0 auto;
+  }
+}
+
+// Medium devices (tablets landscape, iPads, 768px - 1023px)
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .reactPoll {
+    padding: 1.25rem;
+  }
+
+  .chartContainer {
+    width: 80%;
+    margin: 0 auto;
+  }
+}
+
+// Large devices (desktops, 1024px and up)
+@media screen and (min-width: 1024px) {
+  .reactPoll {
+    padding: 1.5rem;
+  }
+
+  .chartContainer {
+    width: 70%;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+}
+
+// ============================================================================
+// RTL Responsive Adjustments
+// Ensure RTL layout works correctly on all screen sizes
+// ============================================================================
+.rtl {
+  // Mobile adjustments for RTL
+  @media screen and (max-width: 479px) {
+    .ms-ChoiceField-wrapper {
+      padding-right: 0;
+      padding-left: 0;
+    }
+  }
+
+  // Tablet adjustments for RTL
+  @media screen and (min-width: 480px) and (max-width: 1023px) {
+    :global(.ms-ChoiceFieldGroup-flexContainer) {
+      padding-right: 0;
     }
   }
 }

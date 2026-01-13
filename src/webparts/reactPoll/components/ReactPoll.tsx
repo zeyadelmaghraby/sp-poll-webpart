@@ -2,20 +2,32 @@ import * as React from "react";
 import styles from "./ReactPoll.module.scss";
 import { IReactPollProps } from "./IReactPollProps";
 import { useGetData } from "../../../apiHooks/useGetData";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import {
   ChoiceGroup,
   IChoiceGroupOption,
 } from "@fluentui/react/lib/ChoiceGroup";
 import { PrimaryButton } from "@fluentui/react/lib/Button";
-import { IQuestion } from "../../../models/models";
+import { IQuestion, Language, IBilingualText } from "../../../models/models";
 import {
   ChartControl,
   ChartType,
 } from "@pnp/spfx-controls-react/lib/ChartControl";
 import { ShimmerLoadder } from "./Loader";
 
+/**
+ * ReactPoll Component
+ * A bilingual (English/Arabic) poll web part with RTL/LTR support
+ * 
+ * Features:
+ * - Dynamic language switching between English and Arabic
+ * - Automatic RTL/LTR layout based on selected language
+ * - Configurable UI text from Property Pane
+ * - Responsive design for all device sizes
+ */
 const ReactPoll: React.FunctionComponent<IReactPollProps> = (props) => {
+  const { language, textConfiguration } = props;
+  
   const {
     isLoading,
     isSubmitting,
@@ -25,9 +37,36 @@ const ReactPoll: React.FunctionComponent<IReactPollProps> = (props) => {
     setQuestions,
   } = useGetData(props.context, props.userEmail, props.webServerRelativeUrl);
 
-  useEffect(() => {
-    //Get Question
+  /**
+   * Helper function to get text based on current language
+   * Returns English text by default for backward compatibility
+   */
+  const getText = useMemo(() => {
+    return (bilingualText: IBilingualText): string => {
+      return language === Language.Arabic ? bilingualText.ar : bilingualText.en;
+    };
+  }, [language]);
 
+  /**
+   * Determine if the current language is RTL (Arabic)
+   * Used for applying RTL/LTR CSS classes and direction attribute
+   */
+  const isRTL = useMemo(() => language === Language.Arabic, [language]);
+
+  /**
+   * Get the appropriate direction class based on language
+   * 'rtl' for Arabic, 'ltr' for English (default)
+   */
+  const directionClass = useMemo(() => isRTL ? styles.rtl : styles.ltr, [isRTL]);
+
+  /**
+   * Get the direction attribute value for HTML elements
+   * 'rtl' for Arabic, 'ltr' for English
+   */
+  const directionAttr = useMemo(() => isRTL ? 'rtl' : 'ltr', [isRTL]);
+
+  useEffect(() => {
+    // Get Question on component mount
     getQuestion()
       .then(() => {
         return;
@@ -37,7 +76,10 @@ const ReactPoll: React.FunctionComponent<IReactPollProps> = (props) => {
       });
   }, []);
 
-  //Submit Answer
+  /**
+   * Handle submit button click
+   * Submits the user's answer for the selected option
+   */
   const handleSubmitClick = (question: IQuestion): void => {
     submitAnswer(question.id, question.selectedOption, props.userEmail)
       .then(() => {
@@ -48,8 +90,11 @@ const ReactPoll: React.FunctionComponent<IReactPollProps> = (props) => {
       });
   };
 
-  //Change Selection
-  const chnageSelectidOption = (
+  /**
+   * Handle option selection change
+   * Updates the selected option for the question
+   */
+  const changeSelectedOption = (
     ev: React.FormEvent<HTMLElement | HTMLInputElement>,
     option: IChoiceGroupOption,
     questionId: number
@@ -64,30 +109,53 @@ const ReactPoll: React.FunctionComponent<IReactPollProps> = (props) => {
   };
 
   return (
-    <>
-      {/* Show Loadder while Loading Question */}
-      {isLoading && <ShimmerLoadder />}
+    // Main container with RTL/LTR direction class applied
+    <div className={`${styles.reactPoll} ${directionClass}`} dir={directionAttr}>
+      {/* Web Part Title - Configurable from Property Pane */}
+      <div className={styles.pollTitle}>
+        {getText(textConfiguration.webPartTitle)}
+      </div>
 
-      {/* Show Chart if Current User already gave answer */}
+      {/* Show Loader while Loading Question */}
+      {isLoading && (
+        <div className={styles.loadingMessage}>
+          <ShimmerLoadder />
+          <p>{getText(textConfiguration.loadingMessage)}</p>
+        </div>
+      )}
+
+      {/* Show "No Questions" message when no active polls */}
+      {!isLoading && (!questions || questions.length === 0) && (
+        <div className={styles.noQuestionsMessage}>
+          {getText(textConfiguration.noQuestionsMessage)}
+        </div>
+      )}
+
+      {/* Render Poll Questions */}
       {questions &&
         questions.length > 0 &&
         questions.map((question) => (
           <div key={question.id}>
+            {/* Show Chart if Current User has already voted */}
             {question.answer.isCurrentUserAnswered && (
               <React.Fragment key={question.id}>
-                <div className={styles["ms-Grid"]} dir="ltr">
+                {/* Results container with dynamic direction */}
+                <div className={styles["ms-Grid"]} dir={directionAttr}>
+                  {/* Results Title */}
+                  <div className={styles.resultsTitle}>
+                    {getText(textConfiguration.resultsTitle)}
+                  </div>
+                  
                   <div className={styles["ms-Grid-row"]}>
                     <div
-                      className={` ${styles["ms-Grid-col"]} ${styles["ms-sm12"]} ${styles["ms-font-m-plus"]} ${styles["ms-fontWeight-bold"]}  `}
+                      className={`${styles["ms-Grid-col"]} ${styles["ms-sm12"]} ${styles["ms-font-m-plus"]} ${styles["ms-fontWeight-bold"]} ${styles.questionLabel}`}
                     >
                       {question.question}
                     </div>
                   </div>
-                  <div
-                    className={`${styles["ms-Grid-row"]} ${styles.chartRow}`}
-                  >
+                  <div className={`${styles["ms-Grid-row"]} ${styles.chartRow}`}>
                     <div
-                      className={` ${styles["ms-Grid-col"]} ${styles["ms-sm12"]} ${styles["ms-md12"]} ${styles["ms-lg6"]} `}
+                      className={`${styles["ms-Grid-col"]} ${styles["ms-sm12"]} ${styles["ms-md12"]} ${styles["ms-lg6"]} ${styles.chartContainer}`}
                     >
                       <ChartControl
                         type={ChartType.Pie}
@@ -106,7 +174,9 @@ const ReactPoll: React.FunctionComponent<IReactPollProps> = (props) => {
                           Animation: false,
                           legend: {
                             display: true,
-                            position: "right",
+                            // Position legend based on language direction
+                            position: isRTL ? "left" : "right",
+                            rtl: isRTL, // Enable RTL for chart legend
                           },
                           title: {
                             display: false,
@@ -119,35 +189,52 @@ const ReactPoll: React.FunctionComponent<IReactPollProps> = (props) => {
               </React.Fragment>
             )}
 
-            {/* Show Question with Options if Current User already didn't give answer */}
+            {/* Show Question with Options if Current User hasn't voted yet */}
             {!question.answer.isCurrentUserAnswered && (
               <React.Fragment key={question.id}>
-                <div className={styles["ms-Grid"]} dir="ltr">
+                <div className={styles["ms-Grid"]} dir={directionAttr}>
                   <div className={styles["ms-Grid-row"]}>
-                    <div
-                      className={` ${styles["ms-Grid-col"]} ${styles["ms-sm12"]}   `}
-                    >
+                    <div className={`${styles["ms-Grid-col"]} ${styles["ms-sm12"]}`}>
                       <ChoiceGroup
                         options={question.options.filter((i) => i !== null)}
                         label={question.question}
                         onChange={(e, selectedOption) =>
-                          chnageSelectidOption(e, selectedOption, question.id)
+                          changeSelectedOption(e, selectedOption, question.id)
                         }
+                        // Apply RTL styling to ChoiceGroup
+                        styles={{
+                          label: {
+                            textAlign: isRTL ? 'right' : 'left',
+                            fontFamily: isRTL 
+                              ? "'Segoe UI', 'Arabic Typesetting', 'Traditional Arabic', Tahoma, Arial, sans-serif"
+                              : undefined,
+                          },
+                          flexContainer: {
+                            direction: isRTL ? 'rtl' : 'ltr',
+                          }
+                        }}
                       />
                     </div>
                   </div>
-                  <div
-                    className={` ${styles["ms-Grid-row"]} ${styles.submitButtonRow}`}
-                  >
-                    <div
-                      className={` ${styles["ms-Grid-col"]} ${styles["ms-sm12"]} `}
-                    >
+                  <div className={`${styles["ms-Grid-row"]} ${styles.submitButtonRow}`}>
+                    <div className={`${styles["ms-Grid-col"]} ${styles["ms-sm12"]}`}>
                       <PrimaryButton
-                        text="Submit"
+                        text={getText(textConfiguration.submitButtonText)}
                         disabled={
                           question.selectedOption === undefined || isSubmitting
                         }
                         onClick={() => handleSubmitClick(question)}
+                        // Apply RTL styling to button if needed
+                        styles={{
+                          root: {
+                            minWidth: '120px',
+                          },
+                          label: {
+                            fontFamily: isRTL 
+                              ? "'Segoe UI', 'Arabic Typesetting', 'Traditional Arabic', Tahoma, Arial, sans-serif"
+                              : undefined,
+                          }
+                        }}
                       />
                     </div>
                   </div>
@@ -156,7 +243,8 @@ const ReactPoll: React.FunctionComponent<IReactPollProps> = (props) => {
             )}
           </div>
         ))}
-    </>
+    </div>
   );
 };
+
 export default ReactPoll;
